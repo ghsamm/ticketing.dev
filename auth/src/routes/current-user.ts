@@ -1,5 +1,5 @@
 import express from "express";
-import { currentUser } from "../middlewares/current-user";
+import { currentUser } from "@ghsamm-org/common/build/middlewares/current-user";
 
 const router = express.Router();
 
