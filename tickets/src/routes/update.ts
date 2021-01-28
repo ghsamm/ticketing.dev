@@ -8,6 +8,8 @@ import { NotFoundError } from "@ghsamm-org/common/build/errors/not-found-error";
 import { UnauthorizedError } from "@ghsamm-org/common/build/errors/unauthorized-error";
 
 import { Ticket } from "../models/ticket";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWraper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -36,6 +38,13 @@ router.put(
     ticket.set(req.body);
 
     await ticket.save();
+
+    new TicketUpdatedPublisher(natsWraper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.send(ticket);
   }

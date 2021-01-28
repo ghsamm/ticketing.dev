@@ -11,13 +11,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ghsamm-org/common": "^1.0.8",
+    "@ghsamm-org/common": "^1.0.10",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "5.10.19"
+    "mongoose": "5.10.19",
+    "node-nats-streaming": "^0.3.2"
   },
   "devDependencies": {
     "@types/cookie-session": "^2.0.42",

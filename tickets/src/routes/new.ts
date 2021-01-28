@@ -3,6 +3,8 @@ import { body } from "express-validator";
 import { requireAuth } from "@ghsamm-org/common/build/middlewares/require-auth";
 import { validateRequest } from "@ghsamm-org/common/build/middlewares/validate-request";
 import { Ticket } from "../models/ticket";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import { natsWraper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -26,6 +28,12 @@ router.post(
     });
 
     await ticket.save();
+    await new TicketCreatedPublisher(natsWraper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.status(201).send(ticket);
   }
