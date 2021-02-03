@@ -10,6 +10,7 @@ import { UnauthorizedError } from "@ghsamm-org/common/build/errors/unauthorized-
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 import { natsWraper } from "../nats-wrapper";
+import { BadRequestError } from "@ghsamm-org/common";
 
 const router = express.Router();
 
@@ -31,6 +32,10 @@ router.put(
       throw new NotFoundError();
     }
 
+    if (ticket.orderId) {
+      throw new BadRequestError("Cannot edit a reserved ticket");
+    }
+
     if (req.currentUser!.id !== ticket.userId) {
       throw new UnauthorizedError();
     }
@@ -41,6 +46,7 @@ router.put(
 
     new TicketUpdatedPublisher(natsWraper.client).publish({
       id: ticket.id,
+      version: ticket.version,
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
