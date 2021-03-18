@@ -5,6 +5,7 @@ import { UndefinedEnvVariable } from "@ghsamm-org/common";
 import { natsWraper } from "./nats-wrapper";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUPdatedListener } from "./events/listeners/ticket-updated-listener";
+import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 
 const startup = async () => {
   if (!process.env.JWT_KEY) {
@@ -45,6 +46,7 @@ const startup = async () => {
 
     new TicketCreatedListener(natsWraper.client).listen();
     new TicketUPdatedListener(natsWraper.client).listen();
+    new ExpirationCompleteListener(natsWraper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
