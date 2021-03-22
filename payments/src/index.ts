@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
 import { app } from "./app";
-import { UndefinedEnvVariable } from "@ghsamm-org/common";
+import { UndefinedEnvVariable } from "@ghsamm-org/common/build/errors/undefined-env-variable";
 import { natsWraper } from "./nats-wrapper";
-import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
-import { TicketUPdatedListener } from "./events/listeners/ticket-updated-listener";
-import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
-import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 
 const startup = async () => {
   if (!process.env.JWT_KEY) {
@@ -45,10 +43,8 @@ const startup = async () => {
     process.on("SIGINT", () => natsWraper.client.close());
     process.on("SIGTERM", () => natsWraper.client.close());
 
-    new TicketCreatedListener(natsWraper.client).listen();
-    new TicketUPdatedListener(natsWraper.client).listen();
-    new ExpirationCompleteListener(natsWraper.client).listen();
-    new PaymentCreatedListener(natsWraper.client).listen();
+    new OrderCreatedListener(natsWraper.client).listen()
+    new OrderCancelledListener(natsWraper.client).listen()
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
