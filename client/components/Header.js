@@ -4,6 +4,8 @@ const Header = ({ currentUser }) => {
   const linksConfig = [
     { label: "Sign Up", href: "/auth/signup", showWhenConnected: false },
     { label: "Sign In", href: "/auth/signin", showWhenConnected: false },
+    { label: "Sell Tickets", href: "/tickets/new", showWhenConnected: true },
+    { label: "My Orders", href: "/orders", showWhenConnected: true },
     { label: "Sign Out", href: "/auth/signout", showWhenConnected: true },
   ];
 
