@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const ingressUrl =
-  "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local";
+const domain = "http://www.ticketing-dev-ghsamm.xyz";
 
 const buildClient = (context) => {
   return axios.create({
-    baseURL: typeof window === "undefined" ? ingressUrl : "",
+    baseURL: typeof window === "undefined" ? domain : "",
     headers: context && context.req && context.req.headers,
   });
 };
