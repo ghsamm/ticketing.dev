@@ -3,6 +3,7 @@ import { OrderCreatedListener } from "./events/listeners/order-created-listener"
 import { natsWraper } from "./nats-wrapper";
 
 const startup = async () => {
+  console.log('Starting...')
 
   if (!process.env.NATS_URL) {
     throw new UndefinedEnvVariable("NATS_URL");
