@@ -7,6 +7,7 @@ import { OrderCreatedListener } from "./events/listeners/order-created-listener"
 import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 
 const startup = async () => {
+  console.log('Starting...')
   if (!process.env.JWT_KEY) {
     throw new UndefinedEnvVariable("JWT_KEY");
   }
